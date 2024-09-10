@@ -1,0 +1,59 @@
+<div class="contact-wrapper">
+    <h2>Contact Us</h2>
+    <form #contactForm="ngForm" (ngSubmit)="onSubmit()">
+        <!-- Name Field -->
+        <label for="name">Name</label>
+        <input 
+            id="name" 
+            name="name" 
+            type="text" 
+            [(ngModel)]="name" 
+            (ngModelChange)="validateField(nameField)" 
+            required 
+            #nameField="ngModel"
+        />
+        <div *ngIf="nameField.invalid && (nameField.touched || nameField.dirty)">
+            <small *ngIf="nameField.errors?.['required']">Name is required.</small>
+        </div>
+
+        <!-- Email Field with Email Validation -->
+        <label for="email">Email</label>
+        <input 
+            id="email" 
+            name="email" 
+            type="email" 
+            [(ngModel)]="email" 
+            (ngModelChange)="validateField(emailField)" 
+            required 
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            #emailField="ngModel"
+        />
+        <div *ngIf="emailField.invalid && (emailField.touched || emailField.dirty)">
+            <small *ngIf="emailField.errors?.['required']">Email is required.</small>
+            <small *ngIf="emailField.errors?.['email']">Enter a valid email address.</small>
+            <small *ngIf="emailField.errors?.['pattern']">Enter a valid email format (e.g., example&#64;gmail.com).</small>
+        </div>
+
+        <!-- Message Field with Min/Max Length Validation -->
+        <label for="message">Message</label>
+        <textarea 
+            id="message" 
+            name="message" 
+            [(ngModel)]="message" 
+            (ngModelChange)="validateField(messageField)" 
+            required 
+            minlength="10" 
+            maxlength="100"
+            #messageField="ngModel"
+        ></textarea>
+        <!-- Show Error Messages for Message Field -->
+        <div *ngIf="messageField.invalid && (messageField.touched || messageField.dirty)">
+            <small *ngIf="messageField.errors?.['required']">Message is required.</small>
+            <small *ngIf="messageField.errors?.['minlength']">Message must be at least 10 characters long.</small>
+            <small *ngIf="messageField.errors?.['maxlength']">Message cannot exceed 100 characters.</small>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" [disabled]="contactForm.invalid">Submit</button>
+    </form>
+</div>
